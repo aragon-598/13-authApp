@@ -8,10 +8,10 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 export class DashboardLayoutComponent {
 
   public authService = inject(AuthService);
-  // public user = computed(()=> this.authService.currentUser());
+  public user = computed(()=> this.authService.currentUser());
 
-  get user(){
-    return this.authService.currentUser();
-  }
+  // get user(){
+  //   return this.authService.currentUser();
+  // }
 
 }
