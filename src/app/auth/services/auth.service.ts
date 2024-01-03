@@ -3,6 +3,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environments';
 import { AuthStatus, CheckToken, LoginResponse, User } from '../interfaces';
+import { RegisterResponse } from '../interfaces/register-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,17 @@ export class AuthService {
     const body = {email, password};
 
     return this.http.post<LoginResponse>(url,body)
+                    .pipe(
+                      map(({user, token})=> this.setAuthentication(user, token)),
+                      catchError(err=> throwError(() => err.error.message))
+                    );
+  }
+
+  register(name:string, email:string, password:string){
+    const url = `${this.baseUrl}/auth/register`;
+    const body = {name, email, password};
+
+    return this.http.post<RegisterResponse>(url,body)
                     .pipe(
                       map(({user, token})=> this.setAuthentication(user, token)),
                       catchError(err=> throwError(() => err.error.message))
